@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <stdbool.h>
+
+
+bool running = 1;
+int var1 = 0;
+int var2 = 0;
+pthread_mutex_t lock;
+
+void  *one() {
+
+
+	while (running) {
+		pthread_mutex_lock(&lock);
+		var1++;
+		var2 = var1;
+		//printf("%i, %i\n",var1,var2);
+		pthread_mutex_unlock(&lock);
+	}	
+
+	return NULL;	
+}
+
+void  *two() {
+
+	int i;
+	for(i=1; i<6; i++) {
+		pthread_mutex_lock(&lock);
+		printf("Number 1 is %i, number 2 is %i\n",var1,var2);
+		sleep(1);
+		pthread_mutex_unlock(&lock);
+		usleep(100000);
+	}
+	running = 0;
+
+	return NULL;	
+}
+
+
+int main() {
+
+if (pthread_mutex_init(&lock, NULL) !=0) {
+		printf("\n mutex init failed\n");
+		return 1;
+	}
+
+
+	pthread_t one_thread;
+	pthread_t two_thread;
+	
+	if (pthread_create(&one_thread, NULL, one, NULL )) {
+		
+		fprintf(stderr, "Error creating thread\n");
+		return 1;
+	}
+
+	if (pthread_create(&two_thread, NULL, two, NULL )) {
+		
+		fprintf(stderr, "Error creating thread\n");
+		return 1;
+	}
+
+	
+	if(pthread_join(one_thread, NULL)) {
+
+		fprintf(stderr, "Error joining thread\n");
+		return 2;		
+	}
+
+	if(pthread_join(two_thread, NULL)) {
+	
+		fprintf(stderr, "Error joining thread\n");
+		return 2;		
+	}
+	
+pthread_mutex_destroy(&lock);
+	
+return 0;
+}
