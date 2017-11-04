@@ -72,7 +72,8 @@ void *pi(){
 	double integral = 0;
 	struct timespec next;
 	clock_gettime(CLOCK_REALTIME, &next);
-		
+
+	// 0.5s runtime	
 	for(i=0; i < 500000/PERIOD; i++){
 		request_output();
 		sem_wait(&sem_pi);
