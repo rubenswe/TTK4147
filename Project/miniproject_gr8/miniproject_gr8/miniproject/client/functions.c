@@ -38,7 +38,6 @@ double extract_output(){
    
     /* walk through other tokens */
     while( token != NULL ) {
-        //printf( " %s\n", token );
         number = token;
         token = strtok(NULL, search);
    	}
@@ -61,14 +60,15 @@ void *pi(){
 	double u;
 	int i;
 	double integral = 0;
+	double error;
 	struct timespec next;
 	clock_gettime(CLOCK_REALTIME, &next);
 	
 	for(i=0; i < 500000/PERIOD; i++){
 		timespec_add_us(&next, PERIOD);
 		request_output();
-		double y = extract_output();
-		double error = REF - y;
+		y = extract_output();
+		error = REF - y;
 		integral = integral + (error * PERIOD/1000000);
 		u = Kp * error + Ki * integral;
 		set_input(u);

@@ -15,15 +15,13 @@
 #include "miniproject.h"
 
 #define PORT 9999
-#define BUFLEN 512
+#define BUFLEN 64
 #define SERVER "192.168.0.1"
 #define PERIOD 1500
 
 #define Kp 10
 #define Ki 800
 #define REF 1
-
-char receive_buffer[BUFLEN];
 
 struct udp_conn conn;
 pthread_mutex_t udp;
