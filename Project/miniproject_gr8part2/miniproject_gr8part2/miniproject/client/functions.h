@@ -26,7 +26,6 @@
 struct udp_conn conn;
 
 char receive_buffer[BUFLEN];
-char extract_buffer[BUFLEN];
 
 sem_t sem_responder;
 sem_t sem_pi;

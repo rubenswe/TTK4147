@@ -90,9 +90,6 @@ void *pi(){
 
 void *udp_listener(){
 
-	int length;
-	char ret;
-
 	while(1){
 		if(!(udp_receive(&conn, receive_buffer, BUFLEN) > 0)) {
 			continue;
